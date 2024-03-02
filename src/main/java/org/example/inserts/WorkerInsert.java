@@ -1,14 +1,12 @@
 package org.example.inserts;
 
-import java.sql.Date;
-
 public class WorkerInsert {
     private String name;
-    private Date birthday;
+    private String birthday;
     private String level;
     private int salary;
 
-    public WorkerInsert(String name, Date birthday, String level, int salary) {
+    public WorkerInsert(String name, String birthday, String level, int salary) {
         this.name = name;
         this.birthday = birthday;
         this.level = level;
@@ -19,7 +17,7 @@ public class WorkerInsert {
         return name;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 

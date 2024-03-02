@@ -4,10 +4,10 @@ import java.sql.Date;
 
 public class ProjectInsert {
     private int clientId;
-    private Date startDate;
-    private Date finishDate;
+    private String startDate;
+    private String finishDate;
 
-    public ProjectInsert(int clientId, Date startDate, Date finishDate) {
+    public ProjectInsert(int clientId, String startDate, String finishDate) {
         this.clientId = clientId;
         this.startDate = startDate;
         this.finishDate = finishDate;
@@ -17,11 +17,11 @@ public class ProjectInsert {
         return clientId;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public Date getFinishDate() {
+    public String getFinishDate() {
         return finishDate;
     }
 }
