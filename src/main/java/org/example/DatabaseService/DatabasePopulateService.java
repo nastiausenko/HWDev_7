@@ -15,11 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabasePopulateService {
-    private static Connection connection = Database.getInstance().getConnection();
-    private static String workerInsert = "INSERT INTO worker (name, birthday, level, salary) VALUES (?, ?, ?, ?)";
-    private static String clientInsert = "INSERT INTO client (name) VALUES (?)";
-    private static String projectInsert = "INSERT INTO project (client_id, start_date, finish_date) VALUES (?, ?, ?)";
-    private static String projectWorkerInsert = "INSERT INTO project_worker (project_id, worker_id) VALUES (?, ?)";
+    private static final Connection connection = Database.getInstance().getConnection();
 
     public static void main(String[] args) {
         populateToWorker();
@@ -29,6 +25,7 @@ public class DatabasePopulateService {
     }
 
     private static void populateToWorker() {
+        String workerInsert = "INSERT INTO worker (name, birthday, level, salary) VALUES (?, ?, ?, ?)";
         try (PreparedStatement queryStatement = connection.prepareStatement(workerInsert)) {
             for (WorkerInsert worker : getWorkers()) {
                 queryStatement.setString(1, worker.getName());
@@ -44,6 +41,7 @@ public class DatabasePopulateService {
     }
 
     private static void populateToClient() {
+        String clientInsert = "INSERT INTO client (name) VALUES (?)";
         try (PreparedStatement queryStatement = connection.prepareStatement(clientInsert)) {
             for (ClientInsert client : getClients()) {
                 queryStatement.setString(1, client.getName());
@@ -56,6 +54,7 @@ public class DatabasePopulateService {
     }
 
     private static void populateToProject() {
+        String projectInsert = "INSERT INTO project (client_id, start_date, finish_date) VALUES (?, ?, ?)";
         try (PreparedStatement queryStatement = connection.prepareStatement(projectInsert)) {
             for (ProjectInsert project : getProjects()) {
                 queryStatement.setInt(1, project.getClientId());
@@ -70,6 +69,7 @@ public class DatabasePopulateService {
     }
 
     private static void populateToProjectWorker() {
+        String projectWorkerInsert = "INSERT INTO project_worker (project_id, worker_id) VALUES (?, ?)";
         try (PreparedStatement queryStatement = connection.prepareStatement(projectWorkerInsert)) {
             for (ProjectWorkerInsert projectWorker : getProjectWorkers()) {
                 queryStatement.setInt(1, projectWorker.getWorkerId());
