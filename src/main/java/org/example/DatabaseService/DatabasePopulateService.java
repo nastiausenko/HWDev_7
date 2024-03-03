@@ -18,65 +18,63 @@ public class DatabasePopulateService {
     private static final Connection connection = Database.getInstance().getConnection();
 
     public static void main(String[] args) {
-        populateToWorker();
-        populateToClient();
-        populateToProject();
-        populateToProjectWorker();
+        for (WorkerInsert worker : getWorkers()) {
+            populateToWorker(worker);
+        }
+
+        for (ClientInsert client : getClients()) {
+            populateToClient(client);
+        }
+
+        for (ProjectInsert project : getProjects()) {
+            populateToProject(project);
+        }
+        for (ProjectWorkerInsert projectWorker : getProjectWorkers()) {
+            populateToProjectWorker(projectWorker);
+        }
     }
 
-    private static void populateToWorker() {
+    private static void populateToWorker(WorkerInsert worker) {
         String workerInsert = "INSERT INTO worker (name, birthday, level, salary) VALUES (?, ?, ?, ?)";
         try (PreparedStatement queryStatement = connection.prepareStatement(workerInsert)) {
-            for (WorkerInsert worker : getWorkers()) {
-                queryStatement.setString(1, worker.getName());
-                queryStatement.setString(2, worker.getBirthday());
-                queryStatement.setString(3, worker.getLevel());
-                queryStatement.setInt(4, worker.getSalary());
-                queryStatement.addBatch();
-            }
-            queryStatement.executeBatch();
+            queryStatement.setString(1, worker.getName());
+            queryStatement.setString(2, worker.getBirthday());
+            queryStatement.setString(3, worker.getLevel());
+            queryStatement.setInt(4, worker.getSalary());
+            queryStatement.executeUpdate();
         } catch (SQLException e) {
             e.fillInStackTrace();
         }
     }
 
-    private static void populateToClient() {
+    private static void populateToClient(ClientInsert client) {
         String clientInsert = "INSERT INTO client (name) VALUES (?)";
         try (PreparedStatement queryStatement = connection.prepareStatement(clientInsert)) {
-            for (ClientInsert client : getClients()) {
-                queryStatement.setString(1, client.getName());
-                queryStatement.addBatch();
-            }
-            queryStatement.executeBatch();
+            queryStatement.setString(1, client.getName());
+            queryStatement.executeUpdate();
         } catch (SQLException e) {
             e.fillInStackTrace();
         }
     }
 
-    private static void populateToProject() {
+    private static void populateToProject(ProjectInsert project) {
         String projectInsert = "INSERT INTO project (client_id, start_date, finish_date) VALUES (?, ?, ?)";
         try (PreparedStatement queryStatement = connection.prepareStatement(projectInsert)) {
-            for (ProjectInsert project : getProjects()) {
-                queryStatement.setInt(1, project.getClientId());
-                queryStatement.setString(2, project.getStartDate());
-                queryStatement.setString(3, project.getFinishDate());
-                queryStatement.addBatch();
-            }
-            queryStatement.executeBatch();
+            queryStatement.setInt(1, project.getClientId());
+            queryStatement.setString(2, project.getStartDate());
+            queryStatement.setString(3, project.getFinishDate());
+            queryStatement.executeUpdate();
         } catch (SQLException e) {
             e.fillInStackTrace();
         }
     }
 
-    private static void populateToProjectWorker() {
+    private static void populateToProjectWorker(ProjectWorkerInsert projectWorker) {
         String projectWorkerInsert = "INSERT INTO project_worker (project_id, worker_id) VALUES (?, ?)";
         try (PreparedStatement queryStatement = connection.prepareStatement(projectWorkerInsert)) {
-            for (ProjectWorkerInsert projectWorker : getProjectWorkers()) {
-                queryStatement.setInt(1, projectWorker.getWorkerId());
-                queryStatement.setInt(2, projectWorker.getProjectId());
-                queryStatement.addBatch();
-            }
-            queryStatement.executeBatch();
+            queryStatement.setInt(1, projectWorker.getWorkerId());
+            queryStatement.setInt(2, projectWorker.getProjectId());
+            queryStatement.executeUpdate();
         } catch (SQLException e) {
             e.fillInStackTrace();
         }
@@ -110,7 +108,7 @@ public class DatabasePopulateService {
         projects.add(new ProjectInsert(5, "2023-05-15", "2023-09-30"));
         projects.add(new ProjectInsert(1, "2023-06-01", "2023-10-15"));
         projects.add(new ProjectInsert(2, "2023-07-10", "2023-09-25"));
-        projects.add(new ProjectInsert(3,  "2023-08-20", "2023-10-05"));
+        projects.add(new ProjectInsert(3, "2023-08-20", "2023-10-05"));
         projects.add(new ProjectInsert(4, "2023-09-05", "2023-11-20"));
         projects.add(new ProjectInsert(5, "2023-10-15", "2023-12-30"));
         return projects;
@@ -129,15 +127,15 @@ public class DatabasePopulateService {
     private static List<WorkerInsert> getWorkers() {
         List<WorkerInsert> workers = new ArrayList<>();
         workers.add(new WorkerInsert("John", "1990-05-15", "Trainee", 800));
-        workers.add(new WorkerInsert( "Alice", "1985-09-22", "Junior", 1200));
+        workers.add(new WorkerInsert("Alice", "1985-09-22", "Junior", 1200));
         workers.add(new WorkerInsert("Bob", "1982-03-10", "Middle", 3000));
         workers.add(new WorkerInsert("Emily", "1995-12-03", "Senior", 5500));
-        workers.add( new WorkerInsert(  "Michael", "1988-07-18", "Trainee", 900));
-        workers.add(new WorkerInsert( "Sophia", "1992-11-27", "Junior", 1100));
-        workers.add(new WorkerInsert(  "William", "1984-04-05", "Middle", 3200));
-        workers.add(new WorkerInsert(  "Olivia", "1997-08-14", "Senior", 5200));
-        workers.add(new WorkerInsert( "James", "1993-02-28", "Trainee", 950));
-        workers.add(new WorkerInsert( "Emma", "1989-06-20", "Junior", 1300));
+        workers.add(new WorkerInsert("Michael", "1988-07-18", "Trainee", 900));
+        workers.add(new WorkerInsert("Sophia", "1992-11-27", "Junior", 1100));
+        workers.add(new WorkerInsert("William", "1984-04-05", "Middle", 3200));
+        workers.add(new WorkerInsert("Olivia", "1997-08-14", "Senior", 5200));
+        workers.add(new WorkerInsert("James", "1993-02-28", "Trainee", 950));
+        workers.add(new WorkerInsert("Emma", "1989-06-20", "Junior", 1300));
         return workers;
     }
 }
